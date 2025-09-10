@@ -10,7 +10,7 @@ import '../config.js'
 export async function before(m, { conn, text }) {	
 global.key = ''
 let who = m.mentionedJid && m.mentionedJid[0] ? m.mentionedJid[0] : m.fromMe ? this.user.jid : m.sender
-let pp = await this.profilePictureUrl(who, 'image').catch(_ => "https://cdn.dorratz.com/files/1738785861212.jpg")
+let pp = await this.profilePictureUrl(who, 'image').catch(_ => "https://i.ibb.co/rfZZQ5dx/img6.jpg")
 
 // Fake
 global.fkontak = { "key": { "participants":"0@s.whatsapp.net", "remoteJid": "status@broadcast", "fromMe": false, "id": "Halo" }, "message": { "contactMessage": { "vcard": `BEGIN:VCARD\nVERSION:3.0\nN:Sy;Bot;;;\nFN:y\nitem1.TEL;waid=${m.sender.split('@')[0]}:${m.sender.split('@')[0]}\nitem1.X-ABLabel:Ponsel\nEND:VCARD` }}, "participant": "0@s.whatsapp.net" }
@@ -28,7 +28,7 @@ let ftroli = { key: { remoteJid: 'status@broadcast', participant: '0@s.whatsapp.
 let fgif = {key: {participant : '0@s.whatsapp.net'}, message: {"videoMessage": { "title": wm, "h": `Hmm`, 'seconds': '999999999', 'gifPlayback': 'true', 'caption': bottime, 'jpegThumbnail': fs.readFileSync('./media/menus/Menu3.jpg')}}}
                              
 let enlace = { contextInfo: { externalAdReply: {title: wm + ' 🐈', body: 'support group' , sourceUrl: redesMenu, thumbnail: await(await fetch(gataMenu)).buffer() }}}
-let enlace2 = { contextInfo: { externalAdReply: { showAdAttribution: true, mediaUrl: yt, mediaType: 'VIDEO', description: '', title: wm, body: '😻 𝗦𝘂𝗽𝗲𝗿 𝗚𝗮𝘁𝗮𝗕𝗼𝘁-𝗠𝗗 - 𝗪𝗵𝗮𝘁𝘀𝗔𝗽𝗽 ', thumbnailUrl: gataMenu, sourceUrl: accountsgb }}}
+let enlace2 = { contextInfo: { externalAdReply: { showAdAttribution: true, mediaUrl: yt, mediaType: 'VIDEO', description: '', title: wm, body: wm, thumbnailUrl: gataMenu, sourceUrl: accountsgb }}}
 let dos = [enlace, enlace2]  
 global.wait = "⌛ *`Cargando...`*\n*✪✦✦⊹⊹⊹⊹⊹⊹⊹⊹✪* `20%`"
 global.waitt = "⏳ *`Cargando....`*\n*✪✦✦✦✦⊹⊹⊹⊹⊹⊹✪* `40%`"
@@ -44,15 +44,15 @@ li.DESTRAVip.to
 }
 //export default handler
 
-global.bot = "wa.me/525577917106"
+global.bot = "wa.me/5215585636665"
 global.canales = [canal1, canal2, canal3, canal4][Math.floor(Math.random() * 4)]
 global.welgata = [tk, ig, md, yt, paypal, fb, ths, asistencia][Math.floor(Math.random() * 8)]
 global.redesMenu = [all, canal1, canal2, canal3, canal4, md, ig, paypal, yt, asistencia, fb, tk][Math.floor(Math.random() * 12)]
 global.accountsgb = [all, canal1, canal2, canal3, canal4, tk, ig, yt, paypal, fb, ths, md, asistencia][Math.floor(Math.random() * 13)]
 global.cuentas = [grupo1, grupo2, grupo_collab1, grupo_collab2, grupo_collab3, grupo_collab4][Math.floor(Math.random() * 6)]
 
-global.canalIdGB = ["120363160031023229@newsletter", "120363169294281316@newsletter", "120363203805910750@newsletter", "120363302472386010@newsletter"]
-global.canalNombreGB = ["INFINITY-WA 💫", "GB - UPDATE 🐈", "Tips sobre GataBot 🤩", "NEW PROJECT: YartexBot-MD ✨"]
+global.canalIdGB = ["120363406580316558@newsletter"]
+global.canalNombreGB = ["BitBox Bot"]
 global.channelRD = await getRandomChannel()
 
 // Imágenes 
@@ -70,33 +70,33 @@ global.imagen11 = fs.readFileSync("./media/menus/img10.jpg")
 global.imagen12 = fs.readFileSync("./media/menus/img11.jpg")
 global.imagen13 = fs.readFileSync("./media/menus/img12.jpg")
 
-global.img = 'https://cdn.dorratz.com/files/1738785861212.jpg'
-global.img2 = img //'https://qu.ax/hjcB.jpg' 
+global.img = 'https://i.ibb.co/67qK14Br/img1.jpg'
+global.img2 = img //'https://i.ibb.co/kVYKtYrT/img2.jpg' 
 
-global.img3 = img //'https://qu.ax/zELg.jpg'  //prem
-global.img4 = img //'https://qu.ax/YueS.jpg'  //prem
+global.img3 = img //'https://i.ibb.co/rG5zgx3c/img3.jpg'  //prem
+global.img4 = img //'https://i.ibb.co/YFd6qrNh/img4.jpg'  //prem
 
-global.img5 = img //'https://qu.ax/xLcn.jpg' 
-global.img6 = img //'https://qu.ax/EGOe.jpg' 
-global.img7 = img //'https://qu.ax/wly.jpg'
-global.img8 = img //'https://qu.ax/TPVV.jpg' 
-global.img9 = img //'https://qu.ax/qKlN.jpg' 
+global.img5 = img //'https://i.ibb.co/fd9P8xvH/img5.jpg' 
+global.img6 = img //'https://i.ibb.co/rfZZQ5dx/img6.jpg' 
+global.img7 = img //'https://i.ibb.co/cS78HJQn/img7.jpg'
+global.img8 = img //'https://i.ibb.co/Lh0Ds2JS/img9.jpg' 
+global.img9 = img //'' 
 
-global.img10 = img //'https://qu.ax/SYFo.jpg' 
-global.img11 = img //'https://qu.ax/efhn.jpg' 
-global.img12 = img //'https://qu.ax/Vmpl.jpg'
-global.img13 = img //'https://qu.ax/ElSy.jpg' 
-global.img14 = img //'https://qu.ax/Tgbe.jpg' 
-global.img15 = img //'https://qu.ax/Puwj.jpg' 
+global.img10 = img //'https://i.ibb.co/27BTLJHs/img10.jpg' 
+global.img11 = img //'https://i.ibb.co/wZY2fTSj/img11.jpg'
+global.img12 = img //'https://i.ibb.co/nMfZWGbZ/img12.jpg'
+global.img13 = img //'https://i.ibb.co/cS78HJQn/img7.jpg' 
+global.img14 = img //'https://i.ibb.co/rG5zgx3c/img3.jpg' 
+global.img15 = img //'https://i.ibb.co/cS78HJQn/img7.jpg' 
 
-global.img16 = img //'https://qu.ax/ovkN.jpg'  //+18
+global.img16 = img //'https://i.ibb.co/rG5zgx3c/img3.jpg'  //+18
 
-global.img17 = img //'https://qu.ax/HJdr.jpg' 
-global.img18 = img //'https://qu.ax/HCt.jpg' 
+global.img17 = img //'https://i.ibb.co/cS78HJQn/img7.jpg' 
+global.img18 = img //'https://i.ibb.co/rG5zgx3c/img3.jpg' 
 
-global.logogit = img //'https://qu.ax/RzKF.jpg' 
+global.logogit = img //'https://i.ibb.co/cS78HJQn/img7.jpg' 
 
-global.gataVidMenu = ['https://qu.ax/SeFS.mp4', 'https://qu.ax/NqZN.mp4'][Math.floor(Math.random() * 2)]
+global.gataVidMenu = ['https://i.ibb.co/YFZR9TLT/Menu1.jpg', 'https://qu.ax/QkgCv.mp4', 'https://qu.ax/milPn.mp4'][Math.floor(Math.random() * 3)]
 global.gataMenu = [img, img2, img6, img7, img8, img9, img13, img14, img15, img17, img18][Math.floor(Math.random() * 11)]
 global.gataImg = [imagen1, imagen2, imagen3, imagen4, imagen5, imagen6, imagen7, imagen8, imagen9, imagen10, imagen11, imagen12, imagen13][Math.floor(Math.random() * 13)]
 
