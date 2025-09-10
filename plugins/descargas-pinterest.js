@@ -1,52 +1,58 @@
-//import { pinterest } from '@bochilteam/scraper'
 import axios from 'axios'
-let handler = async(m, { conn, text, usedPrefix, command }) => {
-if (!text) throw `${lenguajeGB['smsAvisoMG']()} ${mid.smsMalused7}\n*${usedPrefix + command} gata | cat*` 
-m.react("🚀")
-try {
-let response = await axios.get(`https://api.dorratz.com/v2/pinterest?q=${text}`);
-let searchResults = response.data; 
-let selectedResults = searchResults.slice(0, 9); 
-if (m.isWABusiness) {
-const medias = selectedResults.map(result => ({image: { url: result.image }, caption: result.fullname || text }));
-await conn.sendAlbumMessage(m.chat, medias, { quoted: m, delay: 2000, caption: `${lenguajeGB['smsAvisoEG']()} 💞 ${mid.buscador}: ${text}` });
-} else {
-let messages = selectedResults.map(result => [
-``,
-`*${result.fullname || text}*\n*💞 Autor:* ${result.upload_by}\n*💞 Seguidores:* ${result.followers}`, 
-result.image 
-]);
-await conn.sendCarousel(m.chat, `${lenguajeGB['smsAvisoEG']()} 💞 ${mid.buscador}: ${text}`, "🔍 Pinterest Search\n" + wm, messages, m);
-m.react("✅️");
+
+let handler = async (m, { conn, text, usedPrefix, command }) => {
+  if (!text) throw `${lenguajeGB['smsAvisoMG']()} ${mid.smsMalused7}\n*${usedPrefix + command} gata | cat*` 
+
+  m.react('🔎')
+
+  if (/^https?:\/\/[^\s]+$/i.test(text)) {
+    try {
+      let { data } = await axios.get(`${global.APIs.stellar.url}/dow/pinterest?url=${text}&apikey=${global.APIs.stellar.key}`)
+      if (!data?.data) throw null
+
+      const file = {
+        type: data.data.format.includes('mp4') ? 'video' : 'image',
+        url: data.data.dl,
+        caption: `💞 *${data.data.title || "-"}*\n💖 ${lenguajeGB.tipo || 'Tipo'}: ${data.data.format.includes('mp4') ? 'Video' : 'Imagen'}`
+      }
+
+      await conn.sendMessage(m.chat, { [file.type]: { url: file.url }, caption: file.caption }, { quoted: m })
+      return m.react("✅")
+    } catch {
+      return conn.reply(m.chat, lenguajeGB.smsAvisoFallo || '❌ No se pudo procesar ese enlace.', m)
+    }
+  }
+
+  const apis = [
+    `${global.APIs.stellar.url}/search/pinterest?query=${text}&apikey=${global.APIs.stellar.key}`,
+    `https://api.dorratz.com/v2/pinterest?q=${text}`,
+    `https://api.siputzx.my.id/api/s/pinterest?query=${text}`,
+    `https://api.betabotz.eu.org/api/search/pinterest?query=${text}`
+  ]
+
+  for (const api of apis) {
+    try {
+      const res = await axios.get(api)
+      const data = res.data?.data || res.data
+      if (Array.isArray(data) && data.length > 0) {
+        const r = data[0]
+        const url = r.hd || r.image || r.images_url
+        if (!url) continue
+        const caption = `🐞 ${r.title || r.fullname || text}\n🎋 ${lenguajeGB.autor || 'Autor'}: ${r.full_name || r.upload_by || r.name || 'Desconocido'}`
+        await conn.sendMessage(m.chat, { image: { url }, caption }, { quoted: m })
+        return m.react('✅')
+      }
+    } catch {
+      continue
+    }
+  }
+
+  return conn.reply(m.chat, lenguajeGB.smsAvisoFallo || '❌ No se encontraron resultados.', m)
 }
-} catch {
-try {
-let response = await axios.get(`https://api.siputzx.my.id/api/s/pinterest?query=${encodeURIComponent(text)}`);
-if (!response.data.status) return await m.reply("❌ No se encontraron resultados.")
-let searchResults = response.data.data; 
-let selectedResults = searchResults.slice(0, 6); 
-let messages = selectedResults.map(result => [result.grid_title || text, gt, result.images_url]);
-await conn.sendCarousel(m.chat, `${lenguajeGB['smsAvisoEG']()} 💞 ${mid.buscador}: ${text}`, "🔍 Pinterest Search", messages, m);
-} catch {
-try {
-let { data: response } = await axios.get(`${apis}/search/pinterestv2?text=${encodeURIComponent(text)}`);
-if (!response.status || !response.data || response.data.length === 0) return m.reply(`❌ No se encontraron resultados para "${text}".`);
-let searchResults = response.data;
-let selectedResults = searchResults.slice(0, 6);
-let messages = selectedResults.map(result => [
-result.description || null, `🔎 Autor: ${result.name} (@${result.username})`, result.image]);
-await conn.sendCarousel(m.chat, `${lenguajeGB['smsAvisoEG']()} 💞 ${mid.buscador}: ${text}`, "🔍 Pinterest Search", messages, m);
-/*const response=await fetch(`${apis}/search/pinterest?text=${text}`)
-const dataR = await response.json()
-const json=dataR.result
-await conn.sendFile(m.chat, json.getRandom(), 'error.jpg', `${lenguajeGB['smsAvisoEG']()} 💞 ${mid.buscador}: ${text}`.trim(), m)*/
-} catch (e) {
-console.log(`❗❗ ${lenguajeGB['smsMensError2']()} ${usedPrefix + command} ❗❗`)
-console.log(e)
-handler.money = false
-}}}}
-handler.help = ['pinterest <keyword>']
+
+handler.help = ['pinterest <consulta|enlace>']
 handler.tags = ['internet']
-handler.command = /^(pinterest|dlpinterest|pinterestdl)$/i
-handler.money = 50
+handler.command = /^(pinterest(dl)?|dlpinterest)$/i
+handler.money = 30
+
 export default handler
