@@ -11,7 +11,7 @@ Contenido adaptado para GataBot-MD por:
 - elrebelde21 >> https://github.com/elrebelde21
 */
  
-const { useMultiFileAuthState, DisconnectReason, makeCacheableSignalKeyStore, fetchLatestBaileysVersion } = await import('@whiskeysockets/baileys')
+const { useMultiFileAuthState, DisconnectReason, makeCacheableSignalKeyStore, fetchLatestBaileysVersion} = (await import(global.baileys));
 import qrcode from "qrcode"
 import NodeCache from "node-cache"
 import fs from "fs"
@@ -42,12 +42,12 @@ const retryMap = new Map();
 const maxAttempts = 5;
 if (global.conns instanceof Array) console.log()
 else global.conns = []
-let handler = async (m, { conn, args, usedPrefix, command, isOwner, text }) => {
+let handler = async (m, { conn, args, usedPrefix, command, isOwner }) => {
 if (!global.db.data.settings[conn.user.jid].jadibotmd) return m.reply(`${lenguajeGB['smsSoloOwnerJB']()}`)
 if (m.fromMe || conn.user.jid === m.sender) return
 //if (conn.user.jid !== global.conn.user.jid) return conn.reply(m.chat, `${lenguajeGB['smsJBPrincipal']()} wa.me/${global.conn.user.jid.split`@`[0]}&text=${usedPrefix + command}`, m) 
 let who = m.mentionedJid && m.mentionedJid[0] ? m.mentionedJid[0] : m.fromMe ? conn.user.jid : m.sender
-let id = `${text ? text.replace(/\D/g, '') : who.split`@`[0]}`  //conn.getName(who)
+let id = `${who.split`@`[0]}`  //conn.getName(who)
 let pathGataJadiBot = path.join("./GataJadiBot/", id)
 if (!fs.existsSync(pathGataJadiBot)){
 fs.mkdirSync(pathGataJadiBot, { recursive: true })
@@ -59,12 +59,12 @@ gataJBOptions.args = args
 gataJBOptions.usedPrefix = usedPrefix
 gataJBOptions.command = command
 gataJBOptions.fromCommand = true
-gataJadiBot(gataJBOptions, text)
+gataJadiBot(gataJBOptions)
 } 
 handler.command = /^(jadibot|serbot|rentbot|code)/i
 export default handler 
 
-export async function gataJadiBot(options, text) {
+export async function gataJadiBot(options) {
 let { pathGataJadiBot, m, conn, args, usedPrefix, command } = options
 if (command === 'code') {
 command = 'jadibot'; 
@@ -127,9 +127,7 @@ setTimeout(() => { conn.sendMessage(m.sender, { delete: txtQR.key })}, 30000)
 return
 } 
 if (qr && mcode) {
-//let secret = await sock.requestPairingCode((m.sender.split`@`[0]))
-let fixTe = text ? text.replace(/\D/g, '') : m.sender.split('@')[0]
-let secret = await sock.requestPairingCode((fixTe))
+let secret = await sock.requestPairingCode((m.sender.split`@`[0]))
 secret = secret.match(/.{1,4}/g)?.join("-")
 const dispositivo = await getDevice(m.key.id);
 if (!m.isWABusiness) {
