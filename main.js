@@ -6,8 +6,7 @@ import path, { join } from 'path'
 import {fileURLToPath, pathToFileURL} from 'url'
 import { platform } from 'process'
 import * as ws from 'ws'
-import fs, {watchFile, unwatchFile, writeFileSync, readdirSync, statSync,unlinkSync, existsSync, readFileSync, copyFileSync, watch,rmSync, mkdirSync, rename} from 'fs'
-import { readdir, stat, unlink } from 'fs/promises'
+import fs, { watchFile, unwatchFile, writeFileSync, readdirSync, statSync, unlinkSync, existsSync, readFileSync, copyFileSync, watch, rmSync, readdir, stat, mkdirSync, rename } from 'fs'
 import yargs from 'yargs'
 import { spawn } from 'child_process'
 import lodash from 'lodash'
@@ -239,7 +238,7 @@ loadDatabase();/*
 /* ------------------------------------------------*/
 
 global.creds = 'creds.json'
-global.authFile = 'GataBotSession'
+global.authFile = 'BitBox Bot'
 global.authFileJB  = 'GataJadiBot'
 global.rutaBot = join(__dirname, authFile)
 global.rutaJadiBot = join(__dirname, authFileJB)
@@ -352,7 +351,7 @@ const connectionOptions = {
 logger: pino({ level: 'silent' }),
 printQRInTerminal: opcion == '1' ? true : methodCodeQR ? true : false,
 mobile: MethodMobile, 
-browser: opcion == '1' ? ['GataBot-MD', 'Edge', '20.0.04'] : methodCodeQR ? ['GataBot-MD', 'Edge', '20.0.04'] : ["Ubuntu", "Chrome", "20.0.04"],
+browser: opcion == '1' ? ['BitBox Bot', 'Edge', '20.0.04'] : methodCodeQR ? ['BitBoxBot', 'Edge', '20.0.04'] : ["Ubuntu", "Chrome", "20.0.04"],
 auth: {
 creds: state.creds,
 keys: makeCacheableSignalKeyStore(state.keys, Pino({ level: "fatal" }).child({ level: "fatal" })),
@@ -536,6 +535,9 @@ conn.sdemote = lenguajeGB['smsSdemote']()
 conn.sDesc = lenguajeGB['smsSdesc']() 
 conn.sSubject = lenguajeGB['smsSsubject']() 
 conn.sIcon = lenguajeGB['smsSicon']() 
+conn.sSetstock = '*𝙎𝙀 𝙃𝘼 𝙀𝙎𝙏𝘼𝘽𝙇𝙀𝘾𝙄𝘿𝙊 𝘾𝙊𝙍𝙍𝙀𝘾𝙏𝘼𝙈𝙀𝙉𝙏𝙀 𝙀𝙇 𝙎𝙏𝙊𝘾𝙆 𝘿𝙀 𝙏𝙐𝙎 𝙑𝙀𝙉𝙏𝘼𝙎*'
+conn.sSetpagos = '*𝙎𝙀 𝙃𝘼 𝙀𝙎𝙏𝘼𝘽𝙇𝙀𝘾𝙄𝘿𝙊 𝘾𝙊𝙍𝙍𝙀𝘾𝙏𝘼𝙈𝙀𝙉𝙏𝙀 𝙏𝙐𝙎 𝙈𝙀𝙏𝙊𝘿𝙊𝙎 𝘿𝙀 𝙋𝘼𝙂𝙊*'
+conn.sSetreglas = '*𝙎𝙀 𝙃𝘼 𝙀𝙎𝙏𝘼𝘽𝙇𝙀𝘾𝙄𝘿𝙊 𝘾𝙊𝙍𝙍𝙀𝘾𝙏𝘼𝙈𝙀𝙉𝙏𝙀 𝙏𝙐𝙎 𝙍𝙀𝙂𝙇𝘼𝙎*'
 conn.sRevoke = lenguajeGB['smsSrevoke']() 
 conn.handler = handler.handler.bind(global.conn);
 conn.participantsUpdate = handler.participantsUpdate.bind(global.conn);
@@ -558,30 +560,16 @@ return true
 /** Arranque nativo para subbots by - ReyEndymion >> https://github.com/ReyEndymion
  */
 if (global.gataJadibts) {
-  const readRutaJadiBot = fs.readdirSync(rutaJadiBot);
-  if (readRutaJadiBot.length > 0) {
-    const creds = 'creds.json';
-    for (const gjbts of readRutaJadiBot) {
-      const botPath = path.join(rutaJadiBot, gjbts);
-
-      // ✅ Verifica si es un directorio antes de leerlo
-      if (fs.lstatSync(botPath).isDirectory()) {
-        const readBotPath = fs.readdirSync(botPath);
-        if (readBotPath.includes(creds)) {
-          gataJadiBot({
-            pathGataJadiBot: botPath,
-            m: null,
-            conn,
-            args: '',
-            usedPrefix: '/',
-            command: 'serbot'
-          });
-        }
-      }
-    }
-  }
-}
-
+const readRutaJadiBot = readdirSync(rutaJadiBot)
+if (readRutaJadiBot.length > 0) {
+const creds = 'creds.json'
+for (const gjbts of readRutaJadiBot) {
+const botPath = join(rutaJadiBot, gjbts)
+const readBotPath = readdirSync(botPath)
+if (readBotPath.includes(creds)) {
+gataJadiBot({pathGataJadiBot: botPath, m: null, conn, args: '', usedPrefix: '/', command: 'serbot'})
+}}
+}}
 
 /*const pluginFolder = global.__dirname(join(__dirname, './plugins/index'));
 const pluginFilter = (filename) => /\.js$/.test(filename);
@@ -678,7 +666,7 @@ unlinkSync(filePath)})
 }
 
 async function purgeSession() {
-const sessionDir = './GataBotSession';
+const sessionDir = './MichiBot';
 try {
 if (!existsSync(sessionDir)) return;
 const files = await readdir(sessionDir);
@@ -704,54 +692,43 @@ console.log(chalk.cyanBright(`[🔵] Sesiones no esenciales eliminadas de ${glob
 }}
 
 async function purgeSessionSB() {
-  const jadibtsDir = './GataJadiBot/';
-  try {
-    if (!existsSync(jadibtsDir)) return;
-
-    const directories = await readdir(jadibtsDir);
-    let SBprekey = [];
-    const now = Date.now();
-    const oneDayAgo = now - (24 * 60 * 60 * 1000); // 24 horas en milisegundos
-
-    for (const dir of directories) {
-      const dirPath = join(jadibtsDir, dir);
-      const stats = await stat(dirPath);
-      if (stats.isDirectory()) {
-        const files = await readdir(dirPath);
-        const preKeys = files.filter(file => file.startsWith('pre-key-') && file !== 'creds.json');
-        SBprekey = [...SBprekey, ...preKeys];
-
-        for (const file of preKeys) {
-          const filePath = join(dirPath, file);
-          const fileStats = await stat(filePath);
-
-          if (fileStats.mtimeMs < oneDayAgo) { 
-            try {
-              await unlink(filePath);
-              console.log(chalk.bold.green(`${lenguajeGB.smspurgeOldFiles1()} ${file} ${lenguajeGB.smspurgeOldFiles2()}`));
-            } catch (err) {
-              // Manejo del error de eliminación si es necesario
-            }
-          } else {
-            // Archivo todavía activo, no hacer nada
-          }
-        }
-      }
-    }
-
-    if (SBprekey.length === 0) {
-      console.log(chalk.bold.green(lenguajeGB.smspurgeSessionSB1()));
-    } else {
-      console.log(chalk.cyanBright(`[🔵] Pre-keys antiguas eliminadas de sub-bots: ${SBprekey.length}`));
-    }
-
-  } catch (err) {
-    console.log(chalk.bold.red(lenguajeGB.smspurgeSessionSB3() + err));
-  }
-}
+const jadibtsDir = './GataJadiBot/';
+try {
+if (!existsSync(jadibtsDir)) return;
+const directories = await readdir(jadibtsDir);
+let SBprekey = [];
+const now = Date.now();
+const oneHourAgo = now - (24 * 60 * 60 * 1000); //24 horas
+    
+for (const dir of directories) {
+const dirPath = join(jadibtsDir, dir);
+const stats = await stat(dirPath);
+if (stats.isDirectory()) {
+const files = await readdir(dirPath);
+const preKeys = files.filter(file => file.startsWith('pre-key-') && file !== 'creds.json');
+SBprekey = [...SBprekey, ...preKeys];
+for (const file of preKeys) {
+const filePath = join(dirPath, file);
+const fileStats = await stat(filePath);
+if (fileStats.mtimeMs < oneHourAgo) { 
+try {
+await unlink(filePath);
+console.log(chalk.bold.green(`${lenguajeGB.smspurgeOldFiles1()} ${file} ${lenguajeGB.smspurgeOldFiles2()}`))
+} catch (err) {
+//console.error(chalk.red(`[⚠] Error al eliminar pre-key antigua ${file} en ${dir}: ${err.message}`));
+}} else {
+//console.log(chalk.yellow(`[ℹ️] Manteniendo pre-key activa en sub-bot ${dir}: ${file}`));
+}}}}
+if (SBprekey.length === 0) {
+console.log(chalk.bold.green(lenguajeGB.smspurgeSessionSB1()))
+} else {
+console.log(chalk.cyanBright(`[🔵] Pre-keys antiguas eliminadas de sub-bots: ${SBprekey.length}`));
+}} catch (err) {
+console.log(chalk.bold.red(lenguajeGB.smspurgeSessionSB3() + err))
+}}
 
 async function purgeOldFiles() {
-const directories = ['./GataBotSession/', './GataJadiBot/'];
+const directories = ['./BitBox Bot/', './GataJadiBot/'];
 for (const dir of directories) {
 try {
 if (!fs.existsSync(dir)) { 
